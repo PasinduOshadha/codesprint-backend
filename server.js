@@ -12,9 +12,29 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+// Create a sub-router for API version 1
+const apiV1Router = express.Router();
+
+// Mount the sub-router with the /api/v1 prefix
+app.use('/api/v1', apiV1Router);
+
+// Define your routes for API version 1 here
+// apiV1Router.use('/goals', require('./routes/goalRoutes'));
+// apiV1Router.use('/users', require('./routes/userRoutes'));
+
+// testing route
+app.get('/test', (req, res) => {
+    res.send('API is working')
   })
+
+  apiV1Router.get('/', (req, res) => {
+    res.send('API Version 1');
+  });
+
+  // Redirect root path to /api/v1
+app.get('/', (req, res) => {
+    res.redirect('/api/v1');
+  });
 
 // app.use('/api/goals',require('./routes/goalRoutes'));
 //app.use('/api/users',require('./routes/userRoutes'));
